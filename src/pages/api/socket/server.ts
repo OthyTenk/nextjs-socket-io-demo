@@ -35,7 +35,7 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
     console.log("socket.io is initializing");
     const io = new ServerIo(res.socket.server, {
       path: "/api/socket/server",
-      addTrailingSlash: true,
+      // addTrailingSlash: true,
       cors: {
         // origin: [
         //   "http://localhost:3000/",
@@ -52,6 +52,10 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
       const engine = io.engine;
 
       engine.once("upgrade", () => {});
+
+      socket.conn.on("upgrade", () => {
+        const upgradedTransport = socket.conn.transport.name; // in most cases, "websocket"
+      });
 
       console.log(`Socket ${socket.id} connected`);
 
