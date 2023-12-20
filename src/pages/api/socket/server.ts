@@ -39,6 +39,7 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
         origin: [
           "http://localhost:3000/",
           "https://nextjs-socket-io-demo.vercel.app/",
+          "https://socketionextjs.netlify.app",
         ],
         methods: ["GET", "POST"],
       },
