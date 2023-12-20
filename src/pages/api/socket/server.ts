@@ -35,7 +35,7 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
     console.log("socket.io is initializing");
     const io = new ServerIo(res.socket.server, {
       path: "/api/socket/server",
-      // addTrailingSlash: true,
+      addTrailingSlash: false,
       cors: {
         // origin: [
         //   "http://localhost:3000/",
