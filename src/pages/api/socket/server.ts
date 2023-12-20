@@ -36,7 +36,10 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
     const io = new ServerIo(res.socket.server, {
       addTrailingSlash: true,
       cors: {
-        origin: "*",
+        origin: [
+          "http://localhost:3000/",
+          "https://nextjs-socket-io-demo.vercel.app/",
+        ],
         methods: ["GET", "POST"],
       },
     });
