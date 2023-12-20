@@ -49,6 +49,10 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
+      const engine = io.engine;
+
+      engine.once("upgrade", () => {});
+
       console.log(`Socket ${socket.id} connected`);
 
       socket.on(
