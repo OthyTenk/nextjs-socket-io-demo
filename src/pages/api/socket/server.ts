@@ -34,13 +34,15 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
   } else {
     console.log("socket.io is initializing");
     const io = new ServerIo(res.socket.server, {
+      path: "/api/socket/server",
       addTrailingSlash: true,
       cors: {
-        origin: [
-          "http://localhost:3000/",
-          "https://nextjs-socket-io-demo.vercel.app/",
-          "https://socketionextjs.netlify.app",
-        ],
+        // origin: [
+        //   "http://localhost:3000/",
+        //   "https://nextjs-socket-io-demo.vercel.app/",
+        //   "https://socketionextjs.netlify.app",
+        // ],
+        origin: "*",
         methods: ["GET", "POST"],
       },
     });

@@ -6,7 +6,9 @@ const useSocket = () => {
   if (!socket) {
     const baseUrl = baseURL();
     fetch(`${baseUrl}/api/socket/server`);
-    socket = io();
+    socket = io({
+      path: "/api/socket/server",
+    });
   }
 
   return { socket };
