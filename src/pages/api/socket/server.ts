@@ -33,7 +33,13 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
     console.log("socket.io already running");
   } else {
     console.log("socket.io is initializing");
-    const io = new ServerIo(res.socket.server);
+    const io = new ServerIo(res.socket.server, {
+      addTrailingSlash: true,
+      cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+      },
+    });
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
