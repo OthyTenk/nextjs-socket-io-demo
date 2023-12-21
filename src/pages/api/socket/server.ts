@@ -31,6 +31,8 @@ const gameState: { [key: string]: GameState } = {};
 const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
     console.log("socket.io already running");
+    res.end();
+    return;
   } else {
     console.log("socket.io is initializing");
     const io = new ServerIo(res.socket.server, {
@@ -49,14 +51,6 @@ const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      const engine = io.engine;
-
-      engine.once("upgrade", () => {});
-
-      socket.conn.on("upgrade", () => {
-        const upgradedTransport = socket.conn.transport.name; // in most cases, "websocket"
-      });
-
       console.log(`Socket ${socket.id} connected`);
 
       socket.on(

@@ -19,12 +19,6 @@ const ChatPage = () => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      const transport = socket.io.engine.transport.name;
-
-      socket.io.engine.on("upgrade", () => {
-        const upgradedTransport = socket.io.engine.transport.name; // in most cases, "websocket"
-      });
-
       console.log("connected!!");
       setIsConnected(true);
     });
@@ -50,6 +44,7 @@ const ChatPage = () => {
     return () => {
       socket.off("has-joined-game");
       socket.off("deleted-game");
+      // socket.disconnect();
     };
   }, [socket, onLeaveGame]);
 
@@ -61,7 +56,7 @@ const ChatPage = () => {
             className="p-2 bg-orange-600/50 rounded-lg"
             onClick={onLeaveGame}
           >
-            Leave Game ({<span className="font-semibold">currentUser</span>})
+            Leave Game (<span className="font-semibold">{currentUser}</span>)
           </button>
         )}
       </header>

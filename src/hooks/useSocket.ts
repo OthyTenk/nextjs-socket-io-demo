@@ -8,6 +8,7 @@ const useSocket = () => {
     fetch(`${baseUrl}/api/socket/server`);
     socket = io({
       path: "/api/socket/server",
+      addTrailingSlash: false,
     });
     // socket = io(`${baseUrl}/api/socket/server`);
   }
