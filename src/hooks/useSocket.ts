@@ -1,4 +1,4 @@
-import { baseURL } from "@/libs/utils";
+import { baseURL } from "../libs/utils";
 import { type Socket, io } from "socket.io-client";
 let socket: Socket;
 

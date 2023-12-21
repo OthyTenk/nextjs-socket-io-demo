@@ -1,8 +1,8 @@
 "use client";
-import useGlobal from "@/hooks/useGlobal";
-import useSocket from "@/hooks/useSocket";
-import { GameState } from "@/types";
+import { GameState } from "../types";
 import { useEffect, useState } from "react";
+import useGlobal from "../hooks/useGlobal";
+import useSocket from "../hooks/useSocket";
 import WaitingBoard from "./WaitingBoard";
 
 const Game = ({ gameCode }: { gameCode: string }) => {
