@@ -3,8 +3,8 @@
 # FROM node:20-alpine AS base
 FROM node:18-alpine3.18 AS base
 
-
 RUN apk add --no-cache libc6-compat
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -26,15 +26,11 @@ COPY pnpm-lock.yaml* package.json package-lock.json* yarn.lock* ./
 #STAGE 2
 # Create a new image for production dependencies
 FROM base AS deps
-# FROM ${NODE} AS deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
 
 #STAGE 3
 FROM base AS builder
-# FROM ${NODE} AS builder
-#RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-
 COPY --from=deps /app/node_modules ./node_modules
 
 #Copy config files
@@ -46,14 +42,12 @@ COPY  tailwind.config.ts ./tailwind.config.ts
 # Copy application code
 COPY src ./src
 COPY public ./public
-# COPY . .
 
 RUN pnpm run build
 
 
 #STAGE 4
 FROM base AS runner
-# FROM ${NODE} AS runner
 WORKDIR /app
 
 # Set production environment
