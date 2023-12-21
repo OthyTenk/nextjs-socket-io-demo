@@ -1,10 +1,10 @@
 "use client";
 
-import Game from "@/components/Game";
-import InitGame from "@/components/GameModal";
-import useGlobal from "@/hooks/useGlobal";
-import useSocket from "@/hooks/useSocket";
 import { useCallback, useEffect, useState } from "react";
+import Game from "../components/Game";
+import InitGame from "../components/GameModal";
+import useGlobal from "../hooks/useGlobal";
+import useSocket from "../hooks/useSocket";
 
 const ChatPage = () => {
   const [isConnected, setIsConnected] = useState(false);

@@ -1,9 +1,9 @@
 "use client";
-import useGlobal from "@/hooks/useGlobal";
-import useSocket from "@/hooks/useSocket";
-import { quoteLengthType } from "@/types";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
+import useGlobal from "../hooks/useGlobal";
+import useSocket from "../hooks/useSocket";
+import { quoteLengthType } from "../types";
 
 interface Props {
   isSocketConnected: boolean;

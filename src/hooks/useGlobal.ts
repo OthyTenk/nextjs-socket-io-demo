@@ -9,7 +9,7 @@ interface IActions {
 }
 
 const useGlobal = create<GlobalStore & IActions>((set) => ({
-  currentUser: null,
+  currentUser: "",
   setCurrentUser: (name) => set({ currentUser: name }),
 }));
 

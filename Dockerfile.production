@@ -1,0 +1,79 @@
+
+#STAGE 1
+# FROM node:20-alpine AS base
+FROM node:18-alpine3.18 AS base
+
+
+RUN apk add --no-cache libc6-compat
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+
+# Node.js app lives here
+WORKDIR /app
+
+COPY pnpm-lock.yaml* package.json package-lock.json* yarn.lock* ./
+# RUN \
+#     if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+#     elif [ -f package-lock.json ]; then npm ci; \
+#     elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
+#     else echo "Lockfile not found." && exit 1; \
+#     fi
+
+
+
+#STAGE 2
+# Create a new image for production dependencies
+FROM base AS deps
+# FROM ${NODE} AS deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+
+#STAGE 3
+FROM base AS builder
+# FROM ${NODE} AS builder
+#RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+COPY --from=deps /app/node_modules ./node_modules
+
+#Copy config files
+COPY  next.config.js ./next.config.js
+COPY  next-env.d.ts ./next-env.d.ts
+COPY  postcss.config.js ./postcss.config.js
+COPY  tailwind.config.ts ./tailwind.config.ts
+
+# Copy application code
+COPY src ./src
+COPY public ./public
+# COPY . .
+
+RUN pnpm run build
+
+
+#STAGE 4
+FROM base AS runner
+# FROM ${NODE} AS runner
+WORKDIR /app
+
+# Set production environment
+ENV NODE_ENV production
+# ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+# Start the server by default, this can be overwritten at runtime
+EXPOSE 3000
+
+ENV PORT 3000
+# set hostname to localhost
+ENV HOSTNAME "0.0.0.0"
+
+CMD [ "node", "server.js" ]
