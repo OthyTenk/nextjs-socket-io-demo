@@ -7,6 +7,3 @@ services:
       dockerfile: Dockerfile.production
     ports:
       - 3000:3000
-    volumes:
-      - ./src:/app/src
-      - ./public:/app/public
