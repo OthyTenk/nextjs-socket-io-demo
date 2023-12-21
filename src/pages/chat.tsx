@@ -56,7 +56,7 @@ const ChatPage = () => {
             className="p-2 bg-orange-600/50 rounded-lg"
             onClick={onLeaveGame}
           >
-            Leave Game ({<span className="font-semibold">currentUser</span>})
+            Leave Game (<span className="font-semibold">{currentUser}</span>)
           </button>
         )}
       </header>

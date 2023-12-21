@@ -31,8 +31,8 @@ const gameState: { [key: string]: GameState } = {};
 const ioHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
     console.log("socket.io already running");
-    // res.end();
-    // return;
+    res.end();
+    return;
   } else {
     console.log("socket.io is initializing");
     const io = new ServerIo(res.socket.server, {
