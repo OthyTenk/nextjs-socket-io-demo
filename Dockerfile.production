@@ -35,7 +35,7 @@ COPY --from=deps /app/node_modules ./node_modules
 
 #Copy config files
 COPY  next.config.js ./next.config.js
-COPY  next-env.d.ts ./next-env.d.ts
+# COPY  next-env.d.ts ./next-env.d.ts
 COPY  postcss.config.js ./postcss.config.js
 COPY  tailwind.config.ts ./tailwind.config.ts
 
