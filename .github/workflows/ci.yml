@@ -18,5 +18,7 @@ jobs:
 
       - name: Build the Docker image
         run: docker build -f Dockerfile.production -t nextjs-socket-io-demo .
+      - name: Add the tag for the Docker image
+        run: docker tag nextjs-socket-io-demo nextjs-socket-io-demo:latest
       - name: Push to Dockerhub
         run: docker push othytenk/nextjs-socket-io-demo:latest
