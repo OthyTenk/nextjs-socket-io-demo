@@ -21,4 +21,4 @@ jobs:
     - name: Build the Docker image
       run: docker build -t nextjs-socket-io-demo .
     - name: Push to Dockerhub
-      run: docker push  OthyTenk/nextjs-socket-io-demo:latest
+      run: docker push  othytenk/nextjs-socket-io-demo:latest
