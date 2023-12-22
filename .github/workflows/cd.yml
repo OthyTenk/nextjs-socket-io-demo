@@ -1,0 +1,19 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull Docke image
+        run: sudo docker pull othytenk/nextjs-socket-io-demo:latest
+      - name: Delete Old Docker Container
+        run: sudo docker rm -f nextjs-socket-io-demo-container || true
+      - name: Run Docker Container
+        run: sudo docker run -d -p 3000:3000 --name nextjs-socket-io-demo-container othytenk/nextjs-socket-io-demo
