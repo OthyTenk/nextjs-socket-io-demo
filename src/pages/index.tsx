@@ -10,6 +10,7 @@ export default function Home() {
     >
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm text-neutral-400 lg:flex">
         <Link href="/chat">Play Game</Link>
+        <Link href="/test">Test Page</Link>
       </div>
     </main>
   );
