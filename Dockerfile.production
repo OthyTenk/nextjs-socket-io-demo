@@ -3,7 +3,7 @@
 # FROM node:20-alpine AS base
 FROM node:18-alpine3.18 AS base
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache g++ make py3-pip libc6-compat
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -26,31 +26,36 @@ COPY pnpm-lock.yaml* package.json package-lock.json* yarn.lock* ./
 #STAGE 2
 # Create a new image for production dependencies
 FROM base AS deps
+RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
 
 #STAGE 3
 FROM base AS builder
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
+ENV NODE_ENV production
 
 COPY --from=deps /app/node_modules ./node_modules
 
 #Copy config files
-COPY  next.config.js ./next.config.js
-COPY  postcss.config.js ./postcss.config.js
-COPY  tailwind.config.ts ./tailwind.config.ts
+# COPY  next.config.js ./next.config.js
+# COPY  postcss.config.js ./postcss.config.js
+# COPY  tailwind.config.ts ./tailwind.config.ts
 
-# Copy application code
-COPY src ./src
-COPY public ./public
+# # Copy application code
+# COPY src ./src
+# COPY public ./public
+
+COPY . .
 
 RUN pnpm run build
 
 
 #STAGE 4
 FROM base AS runner
+RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 
 # Set production environment
