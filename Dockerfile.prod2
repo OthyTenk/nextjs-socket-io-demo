@@ -1,14 +1,19 @@
 FROM node:18-alpine AS base
 
 RUN apk add --no-cache libc6-compat
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock ./
-RUN yarn global add pnpm && pnpm i --frozen-lockfile
+COPY package.json pnpm-lock.yaml* ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 COPY . .
 
-RUN yarn build
+RUN pnpm run build
 
 ENV NODE_ENV="production"
 
@@ -16,4 +21,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]
