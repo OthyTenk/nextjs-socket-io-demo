@@ -11,7 +11,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Pull Docke image
+      - name: Pull Docker image
         run: sudo docker pull othytenk/nextjs-socket-io-demo:latest
       - name: Delete Old Docker Container
         run: sudo docker rm -f nextjs-socket-io-demo-container || true
