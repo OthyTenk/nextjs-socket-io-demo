@@ -17,7 +17,7 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Build the Docker image
-        run: docker build -f Dockerfile.production -t nextjs-socket-io-demo .
+        run: docker build -f Dockerfile.prod -t nextjs-socket-io-demo .
       - name: Add the tag for the Docker image
         run: docker tag nextjs-socket-io-demo othytenk/nextjs-socket-io-demo:latest
       - name: Push to Dockerhub
