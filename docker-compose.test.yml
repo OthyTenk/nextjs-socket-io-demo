@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  app:
+    hostname: testdocket
+    image: othytenk/nextjs-socket-io-demo:latest
+    ports:
+      - 3000:3000

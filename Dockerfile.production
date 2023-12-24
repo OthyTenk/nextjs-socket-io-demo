@@ -31,11 +31,12 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-l
 
 #STAGE 3
 FROM base AS builder
+RUN apk add --no-cache libc6-compat
+
 COPY --from=deps /app/node_modules ./node_modules
 
 #Copy config files
 COPY  next.config.js ./next.config.js
-# COPY  next-env.d.ts ./next-env.d.ts
 COPY  postcss.config.js ./postcss.config.js
 COPY  tailwind.config.ts ./tailwind.config.ts
 
@@ -52,7 +53,7 @@ WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV production
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -60,6 +61,7 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./
 
 USER nextjs
 
