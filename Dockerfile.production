@@ -39,16 +39,16 @@ ENV NODE_ENV=production
 
 COPY --from=deps /app/node_modules ./node_modules
 
-#Copy config files
-# COPY  next.config.js ./next.config.js
-# COPY  postcss.config.js ./postcss.config.js
-# COPY  tailwind.config.ts ./tailwind.config.ts
+# Copy config files
+COPY  next.config.js ./next.config.js
+COPY  postcss.config.js ./postcss.config.js
+COPY  tailwind.config.ts ./tailwind.config.ts
 
-# # Copy application code
-# COPY src ./src
-# COPY public ./public
+# Copy application code
+COPY src ./src
+COPY public ./public
 
-COPY . .
+#COPY . .
 
 RUN pnpm run build
 
@@ -83,7 +83,7 @@ EXPOSE 3000
 
 ENV PORT 3000
 # set hostname to localhost
-# ENV HOSTNAME "0.0.0.0"
+ENV HOSTNAME "0.0.0.0"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
